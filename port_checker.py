@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-端口占用检测器 v1.0
+端口占用检测器 v2.0
 功能：
 1. 先UAC提权到管理员
 2. 检测用户输入指定端口是否被占用
 3. 如果被占用，找出是哪个进程占用
-4. 允许用户强制杀死该进程
+4. 允许用户强制杀死该进程（系统进程需二次确认）
 5. 支持批量查询（逗号/空格/范围分隔）
 """
 import os
@@ -41,6 +41,14 @@ HDR = '\033[1;36m'
 END = '\033[0m'
 
 
+# ============ 系统关键进程列表 ============
+SYSTEM_PROCESSES = {
+    'system', 'idle', 'smss.exe', 'csrss.exe', 'wininit.exe',
+    'services.exe', 'lsass.exe', 'winlogon.exe', 'winlogonexe',
+    'svchost.exe', 'spoolsv.exe', 'explorer.exe', 'dwm.exe'
+}
+
+
 def parse_input(s):
     """解析端口输入：支持 '80, 443, 8000-8010, 22' 等格式"""
     ports = set()
@@ -67,7 +75,6 @@ def parse_input(s):
 
 def get_netstat():
     """获取所有 TCP 监听/连接状态的端口→PID 映射"""
-    # 使用 netstat 获取
     result = subprocess.run(
         ['netstat', '-ano'], capture_output=True, text=True, errors='ignore')
     port_pid = {}  # 端口 -> (状态, pid)
@@ -97,7 +104,7 @@ def get_process_name(pid):
                 return line.split()[0]
     except Exception:
         pass
-    return '未知'
+    return 'Unknown'
 
 
 def get_process_detail(pid):
@@ -148,20 +155,28 @@ def check_port(port, port_pid):
     except Exception:
         pass
 
+    # 判断是否系统关键进程
+    is_system = name.lower() in SYSTEM_PROCESSES or os.path.basename(cmd).lower() in SYSTEM_PROCESSES
+
     print(f"{RED}⚠️  端口 {port} 已被占用！{END}")
     print(f"   占用进程: {name}")
     print(f"   PID     : {pid}")
     print(f"   状态    : {state}")
     if cmd:
         print(f"   命令行  : {cmd}")
+    if is_system:
+        print(f"{WARN}⚠️  检测到系统关键进程！{END}")
 
-    if name.lower() in ('system', 'idle', 'svchost.exe') :
-        print(f"{WARN}⚠️  这是系统关键进程，不建议强制终止！{END}")
-        return
-
-    # 询问是否杀死
+    # 首次确认
     kill_choice = input(f"\n是否强制终止进程 {name} (PID {pid})? [y/N]: ").strip().lower()
     if kill_choice in ('y', 'yes'):
+        # 系统关键进程：二次确认
+        if is_system:
+            print(f"{WARN}⚠️  警告: {name} 是系统关键进程！强制终止可能导致系统不稳定或崩溃。{END}")
+            confirm = input(f"{RED}❗ 二次确认: 确定要强制终止系统进程 {name} (PID {pid})? (输入 YES 确认): {END}").strip()
+            if confirm.upper() != 'YES':
+                print(f"{OK}↩️ 已取消终止（未输入 YES）{END}")
+                return
         ok, msg = kill_process(pid)
         if ok:
             print(f"{OK}✅ {msg}: {name} (PID {pid}){END}")
@@ -175,9 +190,10 @@ def main():
         request_admin()
 
     print('=' * 60)
-    print(f"{HDR}🔍 端口占用检测器 v1.0{END}")
+    print(f"{HDR}🔍 端口占用检测器 v2.0{END}")
     print('=' * 60)
     print("支持批量查询: 逗号/空格分隔，支持范围 如 '80, 443, 8000-8010'")
+    print("系统进程强制终止需二次确认 (输入 YES)")
 
     while True:
         inp = input("\n请输入要查询的端口 (输入 q 退出): ").strip()
