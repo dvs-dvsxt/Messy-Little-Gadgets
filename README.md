@@ -67,6 +67,22 @@ A secure password hashing utility using **Argon2id** (2025 recommended parameter
 
 ---
 
+## 🖼️ Bing Wallpaper
+
+A self-contained sub-suite for Bing wallpaper tools (in the `bing_wallpaper/` folder):
+- **Bing Wallpaper Downloader** — batch download Bing daily wallpapers (async, resume)
+- **Daily Wallpaper** — daily desktop wallpaper rotation from a folder
+
+```bash
+cd bing_wallpaper
+python bing_wallpaper_downloader.py   # download Bing wallpapers
+python daily_wallpaper.py             # rotate desktop wallpaper daily
+```
+
+See `bing_wallpaper/README.md` for details.
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -78,6 +94,10 @@ Messy-Little-Gadgets/
 ├── music_downloader.py          # Music download GUI tool
 ├── argon2_password_hasher.py    # Argon2 password hasher
 ├── image_resolution_scanner.py  # Image resolution scanner
+├── bing_wallpaper/              # 🖼️ Bing wallpaper tools
+│   ├── bing_wallpaper_downloader.py
+│   ├── daily_wallpaper.py
+│   └── README.md
 └── README.md                    # This document
 ```
 
