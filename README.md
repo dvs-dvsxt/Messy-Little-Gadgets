@@ -77,6 +77,7 @@ Messy-Little-Gadgets/
 ├── directory_sync.py            # Directory sync tool
 ├── music_downloader.py          # Music download GUI tool
 ├── argon2_password_hasher.py    # Argon2 password hasher
+├── image_resolution_scanner.py  # Image resolution scanner
 └── README.md                    # This document
 ```
 
