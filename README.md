@@ -8,6 +8,21 @@
 
 ## 🧩 Included Tools
 
+### 🔄 Directory Sync — `directory_sync.py`
+A universal directory synchronization tool.
+- 🔁 **One-way / Two-way** sync modes
+- 🔍 **MD5-based** change detection
+- ⏱️ **Periodic** checking (default 5s)
+- ⚙️ **Manual input or env vars** configuration (`DIRSYNC_SRC/DST/MODE/INTERVAL`)
+
+```bash
+# One-way sync (via env vars)
+set DIRSYNC_SRC=D:/src
+set DIRSYNC_DST=D:/dst
+set DIRSYNC_MODE=oneway
+python directory_sync.py
+```
+
 ### 🎵 Music Downloader — `music_downloader.py`
 A simple Tkinter GUI tool to search and download music from an online source.
 - 🔍 **Search** songs by keyword
@@ -36,9 +51,10 @@ python argon2_password_hasher.py
 
 ```
 Messy-Little-Gadgets/
-├── music_downloader.py       # Music download GUI tool
+├── directory_sync.py        # Directory sync tool
+├── music_downloader.py      # Music download GUI tool
 ├── argon2_password_hasher.py # Argon2 password hasher
-└── README.md                 # This document
+└── README.md                # This document
 ```
 
 ---
