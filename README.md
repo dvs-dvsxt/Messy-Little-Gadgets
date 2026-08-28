@@ -8,20 +8,48 @@
 
 ## 🧩 Included Tools
 
+### 🌳 Directory Tree Analyzer — `directory_tree_analyzer.py`
+Analyze a directory with a detailed tree view and rich statistics.
+- 🌳 Recursive colored directory tree
+- 📊 File/dir count, total size
+- 📁 Extension stats (Top 15 with size & percentage)
+- 📂 Depth distribution (per-level bar charts)
+- 📦 Size bucket distribution (<1KB ~ >1GB)
+- 🐘 Top 15 largest files
+- 🕳️ Deepest directories
+
+```bash
+python directory_tree_analyzer.py
+```
+
+### 📊 Resource Monitor — `resource_monitor.py`
+Monitor the **Top 10 memory & CPU** consumers, refreshing every 30 seconds.
+- 🔝 Memory Top 10 & CPU Top 10 (process / PID / usage / bar)
+- 💾 Total memory, CPU usage, core counts
+- 🎨 Color-coded usage bars
+
+```bash
+python resource_monitor.py
+```
+
+### 🔍 Port Checker — `port_checker.py`
+Check whether a port is occupied, find the occupying process, and optionally force-kill it.
+- 🛡️ UAC elevation (run as admin)
+- 🔍 Detect port occupancy (bulk query: `80, 443, 8000-8010`)
+- 🕵️ Find occupying process (name / PID / command line)
+- 💀 Force-kill the process (with confirmation)
+- 🚫 System-critical process protection
+
+```bash
+python port_checker.py
+```
+
 ### 🔄 Directory Sync — `directory_sync.py`
 A universal directory synchronization tool.
 - 🔁 **One-way / Two-way** sync modes
 - 🔍 **MD5-based** change detection
 - ⏱️ **Periodic** checking (default 5s)
 - ⚙️ **Manual input or env vars** configuration (`DIRSYNC_SRC/DST/MODE/INTERVAL`)
-
-```bash
-# One-way sync (via env vars)
-set DIRSYNC_SRC=D:/src
-set DIRSYNC_DST=D:/dst
-set DIRSYNC_MODE=oneway
-python directory_sync.py
-```
 
 ### 🎵 Music Downloader — `music_downloader.py`
 A simple Tkinter GUI tool to search and download music from an online source.
@@ -30,10 +58,6 @@ A simple Tkinter GUI tool to search and download music from an online source.
 - 🔥 **Hot songs** list browsing
 - 📂 **Custom save path** via file dialog
 
-```bash
-python music_downloader.py
-```
-
 ### 🔐 Argon2 Password Hasher — `argon2_password_hasher.py`
 A secure password hashing utility using **Argon2id** (2025 recommended parameters).
 - 🧂 **Auto salt** generation
@@ -41,20 +65,19 @@ A secure password hashing utility using **Argon2id** (2025 recommended parameter
 - ✔️ **Verify** passwords
 - 🔄 **Rehash check** for parameter updates
 
-```bash
-python argon2_password_hasher.py
-```
-
 ---
 
 ## 📁 Project Structure
 
 ```
 Messy-Little-Gadgets/
-├── directory_sync.py        # Directory sync tool
-├── music_downloader.py      # Music download GUI tool
-├── argon2_password_hasher.py # Argon2 password hasher
-└── README.md                # This document
+├── directory_tree_analyzer.py   # Directory tree analyzer
+├── resource_monitor.py          # Memory/CPU Top 10 monitor
+├── port_checker.py              # Port occupancy checker
+├── directory_sync.py            # Directory sync tool
+├── music_downloader.py          # Music download GUI tool
+├── argon2_password_hasher.py    # Argon2 password hasher
+└── README.md                    # This document
 ```
 
 ---
